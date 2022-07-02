@@ -8,6 +8,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _onRefresh() {
+      context.read<MoviesBloc>().add(GetMovies());
+      return Future.delayed(const Duration(seconds: 1));
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -25,66 +30,69 @@ class HomeScreen extends StatelessWidget {
           }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: ListView(
-              children: [
-                SizedBox(
-                  height: 320,
-                  child: PageView.builder(
-                    itemCount: state.trending!.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          ImageContainer(
-                            height: 230,
-                            image: state.trending![index].posterPathUrl,
-                            onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MovieScreen(
-                                  args: MovieScreenArguments(
-                                    movie: state.trending![index],
+            child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: ListView(
+                children: [
+                  SizedBox(
+                    height: 320,
+                    child: PageView.builder(
+                      itemCount: state.trending!.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ImageContainer(
+                              height: 230,
+                              image: state.trending![index].posterPathUrl,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MovieScreen(
+                                    args: MovieScreenArguments(
+                                      movie: state.trending![index],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            state.trending![index].title,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 22.0,
-                              overflow: TextOverflow.ellipsis,
+                            const SizedBox(height: 20),
+                            Text(
+                              state.trending![index].title,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 22.0,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    },
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Column(
-                    children: [
-                      CategoryView(
-                        title: 'Playing Now',
-                        items: state.playingNow!,
-                      ),
-                      CategoryView(
-                        title: 'Popular',
-                        items: state.popular!,
-                      ),
-                      CategoryView(
-                        title: 'Coming Soon',
-                        items: state.comingSoon!,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: [
+                        CategoryView(
+                          title: 'Playing Now',
+                          items: state.playingNow!,
+                        ),
+                        CategoryView(
+                          title: 'Popular',
+                          items: state.popular!,
+                        ),
+                        CategoryView(
+                          title: 'Coming Soon',
+                          items: state.comingSoon!,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },
