@@ -20,6 +20,9 @@ class HomeScreen extends StatelessWidget {
       ),
       body: BlocBuilder<MoviesBloc, MoviesState>(
         builder: (context, state) {
+          if (state is MoviesLoading) {
+            return const LoadingContainer();
+          }
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ListView(
