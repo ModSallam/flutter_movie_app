@@ -13,12 +13,19 @@ class CategoryScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: const Text(
-          'FIRE MOVIE',
-          style: TextStyle(fontSize: 26.0),
+        title: Text(
+          args.title,
+          style: const TextStyle(fontSize: 26.0),
         ),
       ),
-      body: Text(args.title),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        child: ListView.builder(
+          itemCount: args.movies.length,
+          itemBuilder: (context, index) =>
+              CategoryCardItem(movie: args.movies[index]),
+        ),
+      ),
     );
   }
 }

@@ -13,6 +13,10 @@ class MovieModel extends Equatable {
     return 'https://image.tmdb.org/t/p/w500$posterPath';
   }
 
+  String get backdropPathUrl {
+    return 'https://image.tmdb.org/t/p/w500$backdropPath';
+  }
+
   const MovieModel({
     required this.id,
     required this.title,
