@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:movie_app/presentation/presentation.dart';
 
@@ -26,10 +28,15 @@ class MovieScreen extends StatelessWidget {
             width: double.infinity,
             height: 300,
             decoration: BoxDecoration(
+              color: Colors.transparent,
               image: DecorationImage(
                 image: NetworkImage(args.movie.backdropPathUrl),
                 fit: BoxFit.cover,
               ),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: Container(),
             ),
           ),
           Padding(
